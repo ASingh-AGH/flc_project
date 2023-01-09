@@ -19,10 +19,10 @@ def infix_to_rpn(expression):
 
     # Iterate through the expression one character at a time
     for character in expression:
-        if character not in operators:  # if an operand append in postfix expression
+        if character not in operators:  #Check if character is a number or operators
             output+= character
 
-        elif character=='(':  # else Operators push onto stack
+        elif character=='(':  
             stack.append('(')
         # If the character is a right parenthesis, pop all the operators from
         # the stack until you reach the matching left parenthesis
