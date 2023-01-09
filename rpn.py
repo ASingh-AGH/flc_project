@@ -1,4 +1,7 @@
 def infix_to_rpn(expression):
+    print("Input equation: " + expression)
+    #Set all operators
+    operators = set(['+', '-', '*', '/', '(', ')', '^'])
     # Set up the precedence of the operators
     precedence = {
         "+": 0,
@@ -12,35 +15,33 @@ def infix_to_rpn(expression):
 
     # Set up the stack for the Shunting-yard algorithm
     stack = []
-    output = []
+    output = ''
 
     # Iterate through the expression one character at a time
-    for c in expression:
-        if c.isdigit() or c.isalpha():
-            output.append(c)
-        # If the character is an operator, pop from stack based on precedence
-        elif c in precedence:
-            while stack and stack[-1] != "(" and precedence[stack[-1]] >= precedence[c]:
-                output.append(stack.pop())
-            stack.append(c)
+    for character in expression:
+        if character not in operators:  # if an operand append in postfix expression
+            output+= character
 
-        elif c == "(":
-            stack.append(c)
+        elif character=='(':  # else Operators push onto stack
+            stack.append('(')
         # If the character is a right parenthesis, pop all the operators from
         # the stack until you reach the matching left parenthesis
-        elif c == ")":
-            while stack and stack[-1] != "(":
-                output.append(stack.pop())
+        elif character==')':
+            while stack and stack[-1]!= '(':
+                output+=stack.pop()
             stack.pop()
+        else: 
+            while stack and stack[-1]!='(' and precedence[character]<=precedence[stack[-1]]:
+                output+=stack.pop()
+            stack.append(character)
 
 
     # Pop remaining operators from the stack and add them to the output
     while stack:
-        output.append(stack.pop())
-
-    output = [s.replace('(', '') and s.replace(')', '') for s in output]
+        output+=stack.pop()
     # Return the result as a string
-    return " ".join(output)
+    
+    return output
 
 def tempchoice():
     tmpchoice = input('Go back to the menu? (y/n) ')
